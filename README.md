@@ -101,7 +101,7 @@ mr-jenk/
 
 * [x] Install and Configure Jenkins (Issue 1)
 * [ ] Configure Build Agents (Issue 2)
-* [ ] Create Jenkins Job with GitHub Integration (Issue 3)
+* [x] Create Jenkins Job with GitHub Integration (Issue 3)
 * [ ] Set Up Automatic Build Triggers (Issue 4)
 * [ ] Integrate Backend Automated Testing (Issue 5)
 * [ ] Integrate Frontend Automated Testing (Issue 6)
