@@ -1,8 +1,8 @@
-# Mr. Jenk
+# mr-jenk
 
 > **Automated CI/CD pipeline for e-commerce microservices platform**
 
-Mr. Jenk is a dedicated Jenkins-based automation suite designed to manage the full lifecycle of an e-commerce microservices platform. It handles everything from source code integration and automated testing to secure deployment and rollback strategies.
+mr-jenk is a dedicated Jenkins-based automation suite designed to manage the full lifecycle of an e-commerce microservices platform. It handles everything from source code integration and automated testing to secure deployment and rollback strategies.
 
 https://github.com/johneliud/mr-jenk
 
@@ -89,8 +89,7 @@ Access the dashboard at `http://localhost:8080` and ensure the required plugins 
 
 ```text
 mr-jenk/
-├── guide/
-│   └── ISSUES.md         # Project roadmap and issue tracking
+├── Jenkinsfile						# Defines the CI/CD pipeline
 ├── README.md             # Project documentation
 └── .gitignore            # Git ignore patterns
 ```
