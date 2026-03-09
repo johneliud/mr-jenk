@@ -48,6 +48,7 @@ The initial setup (Issue 1) established the core automation server with the foll
 * **Default Port:** 8080
 * **Base URL:** http://localhost:8080
 * **Security:** Admin credentials initialized and security realm configured.
+* **Automation:** Configured to trigger automatically via GitHub Webhooks on every commit to the `main` branch.
 
 ---
 
@@ -83,6 +84,21 @@ docker run -p 8080:8080 -p 50000:50000 jenkins/jenkins:lts
 ### 3. Verify Installation
 Access the dashboard at `http://localhost:8080` and ensure the required plugins (Git, Pipeline, JUnit, Email Extension) are active in **Manage Jenkins > Manage Plugins**.
 
+### 4. GitHub Webhook Configuration (Issue 4)
+To enable automatic build triggers on every commit to the `main` branch:
+
+#### On GitHub:
+1. Navigate to your repository **Settings > Webhooks > Add webhook**.
+2. **Payload URL:** `https://bentlee-flawed-sunshine.ngrok-free.dev/github-webhook/`
+3. **Content type:** `application/json`
+4. **Which events:** Select "Just the push event."
+5. Click **Add webhook**.
+
+#### On Jenkins:
+1. Open your Pipeline job configuration.
+2. Under **Build Triggers**, check the box for **GitHub hook trigger for GITScm polling**.
+3. Save the configuration.
+
 ---
 
 ## Project Structure
@@ -101,7 +117,7 @@ mr-jenk/
 * [x] Install and Configure Jenkins (Issue 1)
 * [ ] Configure Build Agents (Issue 2)
 * [x] Create Jenkins Job with GitHub Integration (Issue 3)
-* [ ] Set Up Automatic Build Triggers (Issue 4)
+* [x] Set Up Automatic Build Triggers (Issue 4)
 * [ ] Integrate Backend Automated Testing (Issue 5)
 * [ ] Integrate Frontend Automated Testing (Issue 6)
 * [ ] Implement Automated Deployment Stage (Issue 7)
