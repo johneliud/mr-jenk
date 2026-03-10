@@ -2,9 +2,7 @@
 
 > **Automated CI/CD pipeline for e-commerce microservices platform**
 
-mr-jenk is a dedicated Jenkins-based automation suite designed to manage the full lifecycle of an e-commerce microservices platform. It handles everything from source code integration and automated testing to secure deployment and rollback strategies.
-
-https://github.com/johneliud/mr-jenk
+> mr-jenk is a dedicated Jenkins-based automation suite designed to manage the full lifecycle of an e-commerce microservices platform. It handles everything from source code integration and automated testing to secure deployment and rollback strategies.
 
 ---
 
@@ -49,6 +47,13 @@ The initial setup (Issue 1) established the core automation server with the foll
 * **Base URL:** http://localhost:8080
 * **Security:** Admin credentials initialized and security realm configured.
 * **Automation:** Configured to trigger automatically via GitHub Webhooks on every commit to the `main` branch.
+
+### Agent Configuration (Issue 2)
+To support distributed builds and parallel execution, two dedicated build agents have been configured:
+
+* **Backend Agent:** Labeled as `backend`, responsible for Java/Maven microservices and integration tests.
+* **Frontend Agent:** Labeled as `frontend`, responsible for Angular/Node.js builds and UI testing.
+* **Remote Root Directory:** `/home/john/jenkins-agent` (configured on both nodes).
 
 ---
 
@@ -115,7 +120,7 @@ mr-jenk/
 ## Roadmap
 
 * [x] Install and Configure Jenkins (Issue 1)
-* [ ] Configure Build Agents (Issue 2)
+* [x] Configure Build Agents (Issue 2)
 * [x] Create Jenkins Job with GitHub Integration (Issue 3)
 * [x] Set Up Automatic Build Triggers (Issue 4)
 * [ ] Integrate Backend Automated Testing (Issue 5)
