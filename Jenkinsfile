@@ -35,6 +35,11 @@ pipeline {
                         build job: 'api-gateway', wait: true
                     }
                 }
+                stage('frontend') {
+                    steps {
+                        build job: 'frontend', wait: true
+                    }
+                }
             }
         }
 
