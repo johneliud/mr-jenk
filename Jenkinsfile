@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'backend' }
+    agent any
 
     environment {
         REPO_URL = 'https://github.com/johneliud/mr-jenk.git'
@@ -13,21 +13,27 @@ pipeline {
             }
         }
 
-        stage('Build') {
-            steps {
-                echo 'Building application...'
-                sh 'mvn -B clean compile -DskipTests'
-            }
-        }
-
-        stage('Test') {
-            steps {
-                echo 'Running backend unit tests...'
-                sh 'mvn -B test'
-            }
-            post {
-                always {
-                    junit '**/target/surefire-reports/*.xml'
+        stage('Build & Test Services') {
+            parallel {
+                stage('user-service') {
+                    steps {
+                        build job: 'user-service', wait: true
+                    }
+                }
+                stage('product-service') {
+                    steps {
+                        build job: 'product-service', wait: true
+                    }
+                }
+                stage('media-service') {
+                    steps {
+                        build job: 'media-service', wait: true
+                    }
+                }
+                stage('api-gateway') {
+                    steps {
+                        build job: 'api-gateway', wait: true
+                    }
                 }
             }
         }
@@ -45,10 +51,10 @@ pipeline {
             echo 'Pipeline execution complete.'
         }
         success {
-            echo 'Build and test successful.'
+            echo 'All services built and tested successfully.'
         }
         failure {
-            echo 'Build or test failed. Please check logs.'
+            echo 'One or more services failed. Check individual job logs.'
         }
     }
 }
