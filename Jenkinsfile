@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { label 'backend' }
 
     environment {
         REPO_URL = 'https://github.com/johneliud/mr-jenk.git'
@@ -16,14 +16,19 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building application...'
-                // Placeholder for Maven/Angular build commands
+                sh 'mvn -B clean compile -DskipTests'
             }
         }
 
         stage('Test') {
             steps {
-                echo 'Running automated tests...'
-                // Placeholder for JUnit and Jasmine/Karma tests
+                echo 'Running backend unit tests...'
+                sh 'mvn -B test'
+            }
+            post {
+                always {
+                    junit '**/target/surefire-reports/*.xml'
+                }
             }
         }
 
