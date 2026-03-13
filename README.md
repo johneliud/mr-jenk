@@ -39,6 +39,7 @@ The goal of this project is to implement a robust, scalable, and automated CI/CD
 * **Version Control:** Git / GitHub
 * **Build Tools:** Maven (Backend), Angular CLI (Frontend)
 * **Testing:** JUnit (backend), Vitest/Jasmine (frontend)
+* **Deployment:** Vercel (frontend), Render (backend services)
 
 ### Jenkins Configuration (Issue 1)
 The initial setup (Issue 1) established the core automation server with the following specifications:
@@ -79,6 +80,21 @@ The Angular frontend has a dedicated Jenkinsfile (`Jenkinsfile.frontend`) runnin
 
 ### Orchestration
 The root `Jenkinsfile` triggers all five jobs (four backend services + frontend) in parallel. A failure in any job fails the orchestrator and prevents the Deploy stage from running.
+
+### Deployment (Issue 7)
+Each service pipeline includes a Deploy stage. The frontend is fully deployed; backend deployment commands are in place but commented out pending Render credential setup.
+
+* **Frontend:** Deployed to Vercel at `https://frontend-seven-rho-67.vercel.app` via the Vercel CLI (`npx vercel --prod`). Requires a `vercel-token` secret credential in Jenkins.
+* **Backend services:** Deploy stage present in each service pipeline, targeting Render via deploy hook (`curl -X POST "$RENDER_DEPLOY_HOOK"`). Each service requires its own secret credential in Jenkins:
+
+| Service | Credential ID |
+|---|---|
+| user-service | `render-deploy-hook-user-service` |
+| product-service | `render-deploy-hook-product-service` |
+| media-service | `render-deploy-hook-media-service` |
+| api-gateway | `render-deploy-hook-api-gateway` |
+
+To activate backend deployment for a service: copy the deploy hook URL from **Render > Service > Settings > Deploy Hook**, add it as a Secret text credential in Jenkins with the matching ID, then uncomment the two lines in the service's Deploy stage.
 
 ---
 
@@ -150,7 +166,7 @@ mr-jenk/
 * [x] Set Up Automatic Build Triggers (Issue 4)
 * [x] Integrate Backend Automated Testing (Issue 5)
 * [x] Integrate Frontend Automated Testing (Issue 6)
-* [ ] Implement Automated Deployment Stage (Issue 7)
+* [x] Implement Automated Deployment Stage (Issue 7)
 * [ ] Implement Rollback Strategy (Issue 8)
 * [ ] Set Up Build Notifications (Issue 9)
 
