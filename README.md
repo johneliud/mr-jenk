@@ -43,8 +43,8 @@ The goal of this project is to implement a robust, scalable, and automated CI/CD
 ### Jenkins Configuration (Issue 1)
 The initial setup (Issue 1) established the core automation server with the following specifications:
 
-* **Default Port:** 8080
-* **Base URL:** http://localhost:8080
+* **Default Port:** 18080
+* **Base URL:** http://localhost:18080
 * **Security:** Admin credentials initialized and security realm configured.
 * **Automation:** Configured to trigger automatically via GitHub Webhooks on every commit to the `main` branch.
 
@@ -54,6 +54,21 @@ To support distributed builds and parallel execution, two dedicated build agents
 * **Backend Agent:** Labeled as `backend`, responsible for Java/Maven microservices and integration tests.
 * **Frontend Agent:** Labeled as `frontend`, responsible for Angular/Node.js builds and UI testing.
 * **Remote Root Directory:** `/home/john/jenkins-agent` (configured on both nodes).
+
+### Backend Testing (Issue 5)
+Each of the four microservices has a dedicated Jenkinsfile defining a Maven-based pipeline:
+
+* **Stages:** Initialize → Checkout → Build → Unit Test → Package
+* **Test Runner:** Maven Surefire (`mvn test`), with JUnit XML results published to the Jenkins UI.
+* **Artifact Archiving:** The packaged JAR is archived on successful builds for download from Jenkins.
+* **Orchestration:** The root `Jenkinsfile` acts as an orchestrator, triggering all four service pipelines in parallel. A failure in any service fails the orchestrator and prevents the Deploy stage from running.
+
+| Service | Jenkins Job |
+|---|---|
+| user-service | `user-service` |
+| product-service | `product-service` |
+| media-service | `media-service` |
+| api-gateway | `api-gateway` |
 
 ---
 
@@ -81,13 +96,13 @@ cd mr-jenk
 ```
 
 ### 2. Initial Jenkins Setup
-Jenkins is configured to run on port 8080. If running via Docker, use:
+Jenkins is configured to run on port 18080. If running via Docker, use:
 ```bash
-docker run -p 8080:8080 -p 50000:50000 jenkins/jenkins:lts
+docker run -p 18080:18080 -p 50000:50000 jenkins/jenkins:lts
 ```
 
 ### 3. Verify Installation
-Access the dashboard at `http://localhost:8080` and ensure the required plugins (Git, Pipeline, JUnit, Email Extension) are active in **Manage Jenkins > Manage Plugins**.
+Access the dashboard at `http://localhost:18080` and ensure the required plugins (Git, Pipeline, JUnit, Email Extension) are active in **Manage Jenkins > Manage Plugins**.
 
 ### 4. GitHub Webhook Configuration (Issue 4)
 To enable automatic build triggers on every commit to the `main` branch:
@@ -110,9 +125,9 @@ To enable automatic build triggers on every commit to the `main` branch:
 
 ```text
 mr-jenk/
-├── Jenkinsfile						# Defines the CI/CD pipeline
-├── README.md             # Project documentation
-└── .gitignore            # Git ignore patterns
+├── Jenkinsfile                    # Orchestrator pipeline — triggers all service jobs in parallel
+├── README.md                      # Project documentation
+└── .gitignore                     # Git ignore patterns
 ```
 
 ---
@@ -123,7 +138,7 @@ mr-jenk/
 * [x] Configure Build Agents (Issue 2)
 * [x] Create Jenkins Job with GitHub Integration (Issue 3)
 * [x] Set Up Automatic Build Triggers (Issue 4)
-* [ ] Integrate Backend Automated Testing (Issue 5)
+* [x] Integrate Backend Automated Testing (Issue 5)
 * [ ] Integrate Frontend Automated Testing (Issue 6)
 * [ ] Implement Automated Deployment Stage (Issue 7)
 * [ ] Implement Rollback Strategy (Issue 8)
