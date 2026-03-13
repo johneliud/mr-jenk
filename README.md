@@ -61,7 +61,6 @@ Each of the four microservices has a dedicated Jenkinsfile defining a Maven-base
 * **Stages:** Initialize → Checkout → Build → Unit Test → Package
 * **Test Runner:** Maven Surefire (`mvn test`), with JUnit XML results published to the Jenkins UI.
 * **Artifact Archiving:** The packaged JAR is archived on successful builds for download from Jenkins.
-* **Orchestration:** The root `Jenkinsfile` acts as an orchestrator, triggering all four service pipelines in parallel. A failure in any service fails the orchestrator and prevents the Deploy stage from running.
 
 | Service | Jenkins Job |
 |---|---|
@@ -69,6 +68,17 @@ Each of the four microservices has a dedicated Jenkinsfile defining a Maven-base
 | product-service | `product-service` |
 | media-service | `media-service` |
 | api-gateway | `api-gateway` |
+
+### Frontend Testing (Issue 6)
+The Angular frontend has a dedicated Jenkinsfile (`Jenkinsfile.frontend`) running on the `frontend` agent:
+
+* **Stages:** Initialize → Checkout → Install Dependencies → Test → Build
+* **Test Runner:** Karma with `--watch=false --browsers=ChromeHeadless` for headless CI execution.
+* **Test Reports:** Requires `karma-junit-reporter` in `karma.conf.js` (outputDir: `test-results`); results published to the Jenkins UI via the JUnit plugin.
+* **Production Build:** `ng build --configuration production` runs after tests pass.
+
+### Orchestration
+The root `Jenkinsfile` triggers all five jobs (four backend services + frontend) in parallel. A failure in any job fails the orchestrator and prevents the Deploy stage from running.
 
 ---
 
@@ -139,7 +149,7 @@ mr-jenk/
 * [x] Create Jenkins Job with GitHub Integration (Issue 3)
 * [x] Set Up Automatic Build Triggers (Issue 4)
 * [x] Integrate Backend Automated Testing (Issue 5)
-* [ ] Integrate Frontend Automated Testing (Issue 6)
+* [x] Integrate Frontend Automated Testing (Issue 6)
 * [ ] Implement Automated Deployment Stage (Issue 7)
 * [ ] Implement Rollback Strategy (Issue 8)
 * [ ] Set Up Build Notifications (Issue 9)
