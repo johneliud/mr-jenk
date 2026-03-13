@@ -38,7 +38,7 @@ The goal of this project is to implement a robust, scalable, and automated CI/CD
 * **Containerization:** Docker
 * **Version Control:** Git / GitHub
 * **Build Tools:** Maven (Backend), Angular CLI (Frontend)
-* **Testing:** JUnit, Jasmine, Karma
+* **Testing:** JUnit (backend), Vitest/Jasmine (frontend)
 
 ### Jenkins Configuration (Issue 1)
 The initial setup (Issue 1) established the core automation server with the following specifications:
@@ -73,8 +73,8 @@ Each of the four microservices has a dedicated Jenkinsfile defining a Maven-base
 The Angular frontend has a dedicated Jenkinsfile (`Jenkinsfile.frontend`) running on the `frontend` agent:
 
 * **Stages:** Initialize → Checkout → Install Dependencies → Test → Build
-* **Test Runner:** Karma with `--watch=false --browsers=ChromeHeadless` for headless CI execution.
-* **Test Reports:** Requires `karma-junit-reporter` in `karma.conf.js` (outputDir: `test-results`); results published to the Jenkins UI via the JUnit plugin.
+* **Test Runner:** Vitest via `ng test --watch=false`, using the `@angular/build:unit-test` builder (Angular 21).
+* **Test Reports:** JUnit XML output via Vitest's built-in `--reporter=junit`; results published to the Jenkins UI via the JUnit plugin.
 * **Production Build:** `ng build --configuration production` runs after tests pass.
 
 ### Orchestration
