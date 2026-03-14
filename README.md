@@ -65,13 +65,13 @@ Each of the four microservices has a dedicated Jenkinsfile defining a Maven-base
 
 | Service | Jenkins Job |
 |---|---|
-| user-service | `user-service` |
-| product-service | `product-service` |
-| media-service | `media-service` |
-| api-gateway | `api-gateway` |
+| user-service | [user-service](https://github.com/johneliud/user-service/blob/main/Jenkinsfile) |
+| product-service | [product-service](https://github.com/johneliud/product-service/blob/main/Jenkinsfile) |
+| media-service | [media-service](https://github.com/johneliud/media-service/blob/main/Jenkinsfile) |
+| api-gateway | [api-gateway](https://github.com/johneliud/api-gateway/blob/main/Jenkinsfile) |
 
 ### Frontend Testing (Issue 6)
-The Angular frontend has a dedicated Jenkinsfile (`Jenkinsfile.frontend`) running on the `frontend` agent:
+The Angular frontend has a dedicated [Jenkinsfile](https://github.com/johneliud/frontend/blob/main/Jenkinsfile) running on the `frontend` agent:
 
 * **Stages:** Initialize → Checkout → Install Dependencies → Test → Build
 * **Test Runner:** Vitest via `ng test --watch=false`, using the `@angular/build:unit-test` builder (Angular 21).
