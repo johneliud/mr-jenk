@@ -84,8 +84,8 @@ The root `Jenkinsfile` triggers all five jobs (four backend services + frontend)
 ### Deployment (Issue 7)
 Each service pipeline includes a Deploy stage. The frontend is fully deployed; backend deployment commands are in place but commented out pending Render credential setup.
 
-* **Frontend:** Deployed to Vercel at `https://frontend-seven-rho-67.vercel.app` via the Vercel CLI (`npx vercel --prod`). Requires a `vercel-token` secret credential in Jenkins.
-* **Backend services:** Deploy stage present in each service pipeline, targeting Render via deploy hook (`curl -X POST "$RENDER_DEPLOY_HOOK"`). Each service requires its own secret credential in Jenkins:
+* **Frontend:** Deployed to Vercel at `https://frontend-seven-rho-67.vercel.app` via the Vercel CLI (`npx vercel --prod`). On deploy failure, `vercel rollback` automatically promotes the previous deployment. Requires a `vercel-token` secret credential in Jenkins.
+* **Backend services:** Deploy stage present in each service pipeline, targeting Render via deploy hook (`curl -X POST "$RENDER_DEPLOY_HOOK"`). On deploy failure, the rollback re-triggers the deploy hook to restore the last pushed stable commit. For version-specific rollback, use the Render dashboard (**Service > Deploys > Redeploy**). Each service requires its own secret credential in Jenkins:
 
 | Service | Credential ID |
 |---|---|
@@ -167,7 +167,7 @@ mr-jenk/
 * [x] Integrate Backend Automated Testing (Issue 5)
 * [x] Integrate Frontend Automated Testing (Issue 6)
 * [x] Implement Automated Deployment Stage (Issue 7)
-* [ ] Implement Rollback Strategy (Issue 8)
+* [x] Implement Rollback Strategy (Issue 8)
 * [ ] Set Up Build Notifications (Issue 9)
 
 ---
