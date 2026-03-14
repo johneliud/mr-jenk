@@ -81,6 +81,21 @@ The Angular frontend has a dedicated Jenkinsfile (`Jenkinsfile.frontend`) runnin
 ### Orchestration
 The root `Jenkinsfile` triggers all five jobs (four backend services + frontend) in parallel. A failure in any job fails the orchestrator and prevents the Deploy stage from running.
 
+### Build Notifications (Issue 9)
+Every service pipeline sends an HTML email to `johneliud2001@gmail.com` on build completion via the Email Extension plugin:
+
+* **On success:** subject `[Jenkins] <job> #<build> — Build Successful`
+* **On failure:** subject `[Jenkins] <job> #<build> — Build Failed`
+* **Email body includes:** service name, job name, build number, and a direct link to the console output.
+
+#### SMTP Setup (one-time, in Jenkins UI)
+1. Go to **Manage Jenkins → Configure System → Extended E-mail Notification**
+2. Set **SMTP server** to `smtp.gmail.com`
+3. Set **SMTP Port** to `587` and check **Use SSL**
+4. Under **Credentials**, add a Username/Password credential using your Gmail address and an [App Password](https://myaccount.google.com/apppasswords) (required if 2FA is enabled)
+5. Set **Default user e-mail suffix** to `@gmail.com`
+6. Click **Save**
+
 ### Deployment (Issue 7)
 Each service pipeline includes a Deploy stage. The frontend is fully deployed; backend deployment commands are in place but commented out pending Render credential setup.
 
@@ -168,7 +183,7 @@ mr-jenk/
 * [x] Integrate Frontend Automated Testing (Issue 6)
 * [x] Implement Automated Deployment Stage (Issue 7)
 * [x] Implement Rollback Strategy (Issue 8)
-* [ ] Set Up Build Notifications (Issue 9)
+* [x] Set Up Build Notifications (Issue 9)
 
 ---
 
