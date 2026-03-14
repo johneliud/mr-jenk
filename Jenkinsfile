@@ -42,13 +42,6 @@ pipeline {
                 }
             }
         }
-
-        stage('Deploy') {
-            steps {
-                echo 'Deploying application...'
-                // Placeholder for deployment scripts
-            }
-        }
     }
 
     post {
