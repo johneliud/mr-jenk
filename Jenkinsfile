@@ -40,6 +40,11 @@ pipeline {
                         build job: 'frontend', wait: true
                     }
                 }
+                stage('order-service') {
+                    steps {
+                        build job: 'order-service', wait: true
+                    }
+                }
             }
         }
     }
